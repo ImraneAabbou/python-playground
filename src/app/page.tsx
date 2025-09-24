@@ -1,30 +1,39 @@
 "use client";
 import { usePyodide } from "@/utils/hooks/usePyodide";
+import { useRef } from "react";
 
-export default function PyodideTest() {
+export default function Page() {
+  return (
+    <div>
+      <PyodideTest />
+      <PyodideTest numbers={[4, 10, 6, 0]} />
+    </div>
+  );
+}
+
+export function PyodideTest({ numbers = [1, 2, 3] }) {
   const { runner, output } = usePyodide();
-
-  console.log(output)
-
-  const runCode = async () => {
-    const result = await runner(`
+  const figureRef = useRef<HTMLDivElement>(null);
+  const runCode = () =>
+    runner(
+      `
 import matplotlib.pyplot as plt
 print("hi before")
-plt.plot([1,2,3])
-plt.show()
-plt.plot([4,5,6])
+plt.plot([${numbers}])
 plt.show()
 x = input("get something: ")
 print("hi after", x)
 
-`);
-    console.log(result, output);
-  };
-  
+`,
+      figureRef,
+    );
+
   return (
     <div>
+      ----------------------------------------------------
       <button onClick={runCode}>Run Python</button>
       <pre>{output}</pre>
+      <div ref={figureRef}></div>
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { RefObject, useEffect, useState } from "react";
 import type { PyodideAPI } from "pyodide";
 
 export function usePyodide() {
@@ -30,11 +30,16 @@ export function usePyodide() {
     init();
   }, []);
 
-  const runner = async (code: string) => {
-    setOutput("") // clear output result first
+  const runner = (
+    code: string,
+    renderPoint?: RefObject<HTMLElement | null>,
+  ) => {
+    setOutput(""); // clear output result first
+
+    document.pyodideMplTarget = renderPoint?.current;
 
     if (!pyodide) return;
-    await pyodide.runPythonAsync(code);
+    return pyodide.runPythonAsync(code).then((res) => console.log(res));
   };
 
   return { runner, output };
