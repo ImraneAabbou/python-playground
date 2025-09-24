@@ -35,7 +35,13 @@ print("hi after", x)
   return (
     <div>
       ---------------------{STATUS[status]}--------------------------
-      <button onClick={runCode}>Run Python</button>
+      <button
+        onClick={runCode}
+        className="px-4 py-2 bg-blue-400 my-2 rounded disabled:bg-gray-400 cursor-pointer disabled:cursor-wait"
+        disabled={status == STATUS.LOADING || status == STATUS.EXECUTING}
+      >
+        Run Python
+      </button>
       <pre>{output}</pre>
       <div ref={figureRef}></div>
     </div>
