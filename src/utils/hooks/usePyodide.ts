@@ -17,10 +17,10 @@ export function usePyodide() {
       await micropip.install("matplotlib-pyodide");
       await micropip.install("numpy");
 
-      // JS functions
-      (window as any).send_output = (msg: string, newLine = true) =>
-        setOutput((prev) => prev + msg + (newLine ? "\n" : ""));
-      (window as any).get_input = () => window.prompt("Python input:") + "\n";
+      py.globals.set("send_output", (msg: string, newLine = true) =>
+        setOutput((prev) => prev + msg + (newLine ? "\n" : "")),
+      );
+      py.globals.set("get_input", () => prompt("Python input:") + "\n");
 
       // Python code to override print/input
       py.runPython(PYODIDE_OVERWRITER_CODE);
@@ -46,7 +46,6 @@ import sys
 class JsConsole:
     def write(self, s):
         if s.strip():
-            from js import send_output
             send_output(s)
     def flush(self):
         pass
@@ -55,7 +54,6 @@ sys.stdout = JsConsole()
 sys.stderr = JsConsole()
 
 def input(prompt_text=""):
-    from js import send_output, get_input
     if prompt_text:
         send_output(prompt_text, False)
     return get_input()
