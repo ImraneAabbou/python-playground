@@ -31,6 +31,8 @@ export function usePyodide() {
   }, []);
 
   const runner = async (code: string) => {
+    setOutput("") // clear output result first
+
     if (!pyodide) return;
     await pyodide.runPythonAsync(code);
   };
