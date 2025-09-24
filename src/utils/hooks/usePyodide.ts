@@ -25,7 +25,10 @@ export function usePyodide() {
       py.globals.set("send_output", (msg: string, newLine = true) =>
         setOutput((prev) => prev + msg + (newLine ? "\n" : "")),
       );
-      py.globals.set("get_input", () => prompt("Python input:") + "\n");
+      py.globals.set(
+        "get_input",
+        (prompt_text: string) => prompt(prompt_text) + "\n",
+      );
 
       py.runPython(PYODIDE_OVERWRITER_CODE);
 
@@ -71,5 +74,5 @@ sys.stderr = JsConsole()
 def input(prompt_text=""):
     if prompt_text:
         send_output(prompt_text, False)
-    return get_input()
+    return get_input(prompt_text)
 `;

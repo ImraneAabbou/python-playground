@@ -33,6 +33,7 @@ export default function RootLayout({
         <Script
           src="https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js"
           strategy="beforeInteractive"
+          crossOrigin="anonymous"
         />
       </head>
       <body
