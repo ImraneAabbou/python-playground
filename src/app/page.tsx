@@ -1,13 +1,17 @@
 "use client";
+import { STATUS } from "@/types/pyodide";
 import { usePyodide } from "@/utils/hooks/usePyodide";
 import { useRef } from "react";
 
 export default function Page() {
-  return (
+  const { status } = usePyodide();
+  return status !== STATUS.LOADING ? (
     <div>
       <PyodideTest />
       <PyodideTest numbers={[4, 10, 6, 0]} />
     </div>
+  ) : (
+    <div>Loading pyodide library...</div>
   );
 }
 
@@ -30,7 +34,7 @@ print("hi after", x)
 
   return (
     <div>
-      ---------------------{status}--------------------------
+      ---------------------{STATUS[status]}--------------------------
       <button onClick={runCode}>Run Python</button>
       <pre>{output}</pre>
       <div ref={figureRef}></div>
