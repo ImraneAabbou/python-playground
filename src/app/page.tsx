@@ -12,7 +12,7 @@ export default function Page() {
 }
 
 export function PyodideTest({ numbers = [1, 2, 3] }) {
-  const { runner, output } = usePyodide();
+  const { runner, output, status } = usePyodide();
   const figureRef = useRef<HTMLDivElement>(null);
   const runCode = () =>
     runner(
@@ -30,7 +30,7 @@ print("hi after", x)
 
   return (
     <div>
-      ----------------------------------------------------
+      ---------------------{status}--------------------------
       <button onClick={runCode}>Run Python</button>
       <pre>{output}</pre>
       <div ref={figureRef}></div>
